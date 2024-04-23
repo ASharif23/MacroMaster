@@ -1,63 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { getUserProgress, updateUserProgress } from './api';
+import React, { useState } from 'react';
+import Container from '@mui/material/Container';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import ProgressChart from './components/ProgressChart';
 import ProgressForm from './components/ProgressForm';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
 function App() {
-  const [progressData, setProgressData] = useState([]);
-  const userId = 'user-id'; // Replace with actual user ID, or fetch from user context or session
+  const [activeTab, setActiveTab] = useState(0);
 
-  useEffect(() => {
-    getUserProgress(userId)
-      .then((response) => {
-        setProgressData(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching progress data:', error);
-      });
-  }, [userId]);
-
-  const handleProgressUpdate = (newWeight) => {
-    const updatedData = {
-      currentWeight: newWeight,
-      // Add any other fields that need to be updated
-    };
-
-    updateUserProgress(userId, updatedData)
-      .then((response) => {
-        // Update the local state to reflect the new data
-        setProgressData(prevData => ({
-          ...prevData,
-          currentWeight: response.data.currentWeight,
-          // Update other fields as necessary
-        }));
-        alert('Progress updated successfully!');
-      })
-      .catch((error) => {
-        console.error('Failed to update progress:', error);
-        alert('Failed to update progress.');
-      });
-  };
-
-  // Prepare chart data based on progressData
-  const chartData = {
-    labels: progressData.map(entry => entry.date), // Ensure 'date' is in your data
-    datasets: [
-      {
-        label: 'Weight Progress',
-        data: progressData.map(entry => entry.currentWeight), // Replace 'currentWeight' if your field is named differently
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }
-    ]
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
   };
 
   return (
-    <div className="App">
-      <ProgressChart data={chartData} />
-      <ProgressForm onSubmit={handleProgressUpdate} />
-    </div>
+    <Container maxWidth="lg">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            MacroMaster
+          </Typography>
+          {/* Placeholder for future login/logout functionality */}
+        </Toolbar>
+      </AppBar>
+      <Tabs value={activeTab} onChange={handleTabChange} centered>
+        <Tab label="Home" />
+        <Tab label="Log Macros" />
+        <Tab label="Progress Tracker" />
+        <Tab label="Meal Builder" />
+        <Tab label="MacroBot" />
+      </Tabs>
+      {activeTab === 2 && ( // Only render this if 'Progress Tracker' tab is active
+        <Box sx={{ my: 3 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  Monthly Stats
+                </Typography>
+                {/* Placeholder for Monthly Stats Chart */}
+                <ProgressChart />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  Weekly Stats
+                </Typography>
+                {/* Placeholder for Weekly Stats Chart */}
+                <ProgressChart />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <ProgressForm />
+            </Grid>
+          </Grid>
+        </Box>
+      )}
+      {/* Placeholder for other tabs' content */}
+    </Container>
   );
 }
 
