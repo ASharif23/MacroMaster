@@ -49,7 +49,7 @@ function App() {
 
       {foodData && (
         <Paper style={{ marginTop: 20 }}>
-          <Table>
+          <Table>  
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
