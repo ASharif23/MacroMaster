@@ -1,0 +1,18 @@
+{
+  "name": "macromaster",
+  "version": "1.0.0",
+  "description": "MacroMaster, an innovative macro counter app was built with the idea of helping its users achieve optimal personal nutrition tracking by utilizing a comprehensive set of monitoring features, such as protein/fat/carb/calorie tracking with added adjustment to assure that they meet their goals.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.2"
+  }
+}
