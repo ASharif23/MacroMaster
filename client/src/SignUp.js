@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated, setUserId } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +17,8 @@ function SignUp() {
       const response = await axios.post('http://localhost:80/signup', { username, password });
       if (response.data) { // Assuming you get a truthy value on successful sign-up
         setIsAuthenticated(true);
-        // Navigate to home or another page post-signup if needed
+        setUserId(response.data.userId); 
+        navigate('/'); // Navigate to the home page after sign in     
       }
     } catch (error) {
       console.error(error);

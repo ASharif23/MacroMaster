@@ -9,7 +9,7 @@ function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
-  const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated, setUserId } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,6 +19,8 @@ function SignIn() {
       if (response.data) { // Assuming you get a truthy value on successful sign-in
         setIsAuthenticated(true);
         navigate('/'); // Navigate to the home page after sign in
+        setUserId(response.data.userId); 
+        
       }
     } catch (error) {
       console.error(error);

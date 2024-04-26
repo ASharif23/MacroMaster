@@ -12,7 +12,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.options('*', cors())
 
-const uri = "mongodb+srv://muhammadmanekia0:LVPOpVTUoEL33nX8@cluster0.gpujgbb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const uri = "mongodb+srv://muhammadmanekia0:LVPOpVTUoEL33nX8@cluster0.gpujgbb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://alaansharif6:uJOkOTSICVEBvTgm@cluster0.tp7ykbg.mongodb.net/"
 
 const JWT_SECRET='f3b8fdbea8b1d3d177c1e2cbaefb97a8f31db4b5044e365bfbad744c701f8404e7739bacc011d8a8b5767ee3a5a5b0340073aa9a6b4c6b933b2feaba40903cff'
 
@@ -33,19 +34,44 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.get('/foods', async (req, res) => {
+  const { userId } = req.query; // Accessing userId from query parameters
+
+  if (!userId) {
+      return res.status(400).json({ message: 'UserId is required' });
+  }
+
+  try {
+      const foods = await Food.find({ user: userId }); // Query to find foods by userId
+      res.status(200).json(foods);
+  } catch (error) {
+      console.error('Error fetching foods:', error);
+      res.status(500).json({ message: 'Failed to get foods', error: error.message });
+  }
+});
+
+
 app.post('/saveFood', async (req, res) => {
-    try {
-      const newFood = new Food({
-        ...req.body,
-        user: req.body.userId  // Expecting a userId field in the request
-      });
-      await newFood.save();
-      res.status(201).send({ message: 'Food data saved successfully' });
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-  
+  const { userId } = req.body;
+
+  console.log(req.body);
+
+  try {
+    const newFood = new Food({
+      name: req.body.name,
+      calories: req.body.calories,
+      protein: req.body.protein,
+      carbohydrates: req.body.carbohydrates,
+      fat: req.body.fat,      
+      user: userId // Directly using the userId from the body after validation
+    });
+    await newFood.save();
+    res.status(201).send({ message: 'Food data saved successfully' });
+  } catch (error) {
+    console.error('Save food error:', error);
+    res.status(500).send({ error: error.message, message: "Failed to save food data" });
+  }
+});
 
 // Sign-in endpoint
 app.post('/signin', async (req, res) => {
