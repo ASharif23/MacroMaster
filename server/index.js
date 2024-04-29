@@ -5,6 +5,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const User = require( './models/userSchema.js' );
 const Food = require( './models/foodSchema.js' );
+const axios = require( "axios" );
 
 
 const app = express();
@@ -89,6 +90,34 @@ app.post('/signin', async (req, res) => {
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '24h' });
   res.status(200).send({ userId: user._id, message: 'User signed in successfully', token });
 });
+
+app.post('/burnedCalories', async (req, res) => {
+  console.log("Burned Calories Endpoint Hit")
+  const { activity, time } = req.body;
+  try {
+    const result = await burnedCalories(activity, time); // Your existing function
+    console.log("RES", result)
+    res.json(result);
+  } catch (error) {
+    console.error('Error processing request: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+function burnedCalories(activity, time) {
+  return new Promise((resolve, reject) => {
+      const API_KEY = "RfVcGq/F7fViDDBT/OXRig==xTJ3yL273L4Xa9l6";
+      axios.get(`https://api.api-ninjas.com/v1/caloriesburned?activity=${activity}`, {
+          headers: { 'X-Api-Key': API_KEY }
+      }).then(response => {
+          const bestResponse = response.data[0];
+          const caloriesBurned = time ? (bestResponse.total_calories * time / 60) : bestResponse.total_calories;
+          resolve({"name": bestResponse.name, "calories_burned": caloriesBurned});
+      }).catch(error => {
+          reject(error);
+      });
+  });
+}
 
 
 app.listen(80, () => {

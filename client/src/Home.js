@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Typography } from '@mui/material';
 import { useAuth } from './AuthContext';
+import CalorieCalculator from './Fitness';
 
 function Home() {
   const [foodData, setFoodData] = useState([]);
@@ -154,6 +155,7 @@ function Home() {
         </Paper>
         </>
       )}
+      <CalorieCalculator />
     </Container>
 
   );
