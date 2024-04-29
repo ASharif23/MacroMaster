@@ -1,11 +1,9 @@
 //App.js
 
 import React, { useState, useEffect } from 'react';
-import { AppBar, Box, Container, Grid, Paper, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { AppBar, Container, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 import ProgressTracker from './components/ProgressTracker';
 import axios from 'axios';
-
-
 
 function App() {
   const [activeTab, setActiveTab] = useState(0);
@@ -20,7 +18,7 @@ function App() {
 
     const fetchStats = async () => {
       try {
-        const response = await axios.get(`/api/Stats/${userId}`);
+        const response = await axios.get(`http://localhost:3000/Stats/`+ userId);
         setStats(response.data);
       } catch (error) {
         console.error("Error fetching stats data", error);
@@ -29,7 +27,7 @@ function App() {
 
     const fetchActivity = async () => {
       try {
-        const response = await axios.get(`/api/activity/${userId}`);
+        const response = await axios.get(`http://localhost:3000/Activity/`+ userId);
         setActivity(response.data);
       } catch (error) {
         console.error("Error fetching activity data", error);
@@ -38,16 +36,16 @@ function App() {
 
     const fetchProgress = async () => {
       try {
-        const response = await axios.get(`/api/progress/${userId}`);
+        const response = await axios.get(`http://localhost:3000/Progress/`+ userId);
         setProgress(response.data);
       } catch (error) {
         console.error("Error fetching progress data", error);
       }
     };
 
-    //fetchStats();
-    //fetchActivity();
-    //fetchProgress();
+    fetchStats();
+    fetchActivity();
+    fetchProgress();
   }, [userId]);
 
   const handleTabChange = (event, newValue) => {
@@ -61,8 +59,7 @@ function App() {
           <Typography 
             variant="h4" 
             component="div" 
-            sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }} // Changed color to black
-          >
+            sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}>
             MacroMaster
           </Typography>
         </Toolbar>
@@ -74,9 +71,7 @@ function App() {
           <Tab label="Settings" />
         </Tabs>
       </AppBar>
-      
       {activeTab === 2 && <ProgressTracker progress={progress} activity={activity} stats={stats} />}
-        
     </Container>
   );
 }

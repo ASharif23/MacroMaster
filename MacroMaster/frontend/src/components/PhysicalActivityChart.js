@@ -8,7 +8,7 @@ const PhysicalActivityChart = ({ activity }) => {
 
   return (
     <BarChart
-      width={650}
+      width={670}
       height={300}
       data={data}
       margin={{

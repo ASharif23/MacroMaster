@@ -1,12 +1,11 @@
-import React from 'react';
+//progresstracker.js
+
 import { Box, Grid, Paper, Typography } from '@mui/material';
+import React from 'react';
 import LifetimeWeightLossChart from './LifetimeWeightLossChart';
 import PhysicalActivityChart from './PhysicalActivityChart';
 import StatsDisplay from './StatsDisplay';
 import Achievements from './Achievements';
-
-
-
 
 export default function ProgressTracker({ progress, activity, stats }) {
   return (
