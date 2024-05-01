@@ -13,6 +13,7 @@ function Home() {
   const [stats, setStats] = useState(null);
   const [activity, setActivity] = useState(null);
   const [progress, setProgress] = useState(null);
+  const [achievements, setAchievements] = useState(null);
 
   // This ID should come from user's session or authentication context
   const userId = '6616dbbecb3e0ede6b1543d9'; 
@@ -44,11 +45,20 @@ function Home() {
       } catch (error) {
         console.error("Error fetching progress data", error);
       }
+
+    };const fetchAchievements = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/Achievements/`+ userId);
+        setAchievements(response.data);
+      } catch (error) {
+        console.error("Error fetching achievements data", error);
+      }
     };
 
     fetchStats();
     fetchActivity();
     fetchProgress();
+    fetchAchievements();
   }, [userId]);
 
   const handleTabChange = (event, newValue) => {
@@ -103,7 +113,7 @@ function Home() {
       </Container>
       )}
       {activeTab === 1 && (<MacroLog />)}
-      {activeTab === 2 && <ProgressTracker progress={progress} activity={activity} stats={stats} />}
+      {activeTab === 2 && <ProgressTracker progress={progress} activity={activity} stats={stats} achievements={achievements} />}
       {activeTab === 3 && (<Chatbot />)}
       {activeTab === 4 && (<SettingsPage />)}
 

@@ -7,7 +7,7 @@ import PhysicalActivityChart from './PhysicalActivityChart';
 import StatsDisplay from './StatsDisplay';
 import Achievements from './Achievements';
 
-export default function ProgressTracker({ progress, activity, stats }) {
+export default function ProgressTracker({ progress, activity, stats, achievements }) {
   return (
     <Box sx={{ my: 3 }}>
       <Grid container spacing={3}>
@@ -40,7 +40,7 @@ export default function ProgressTracker({ progress, activity, stats }) {
             <Typography variant="h6" gutterBottom>
               Achievements
             </Typography>
-            Achievements
+            <Achievements achievements={achievements} />
           </Paper>
         </Grid>
       </Grid>

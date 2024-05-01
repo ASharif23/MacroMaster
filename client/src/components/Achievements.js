@@ -12,7 +12,10 @@ const Achievements = ({ achievements }) => {
           <Typography key={index}>{achievement}</Typography>
         ))
       ) : (
-        <Typography>No achievements yet</Typography>
+        <Box>
+        <Typography>Lost 5 Pounds!</Typography>
+        <Typography>Lost 10 Pounds!</Typography>
+        </Box>
       )}
     </Box>
   );

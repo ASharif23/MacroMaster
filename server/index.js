@@ -133,10 +133,17 @@ const ProgressSchema = new mongoose.Schema({
   weight: Number,
 }, { collection: 'Progress' });
 
+const AchievementsSchema = new mongoose.Schema({
+  userId: String,
+  description: String,
+  achievedOn: { type: Date, default: Date.now }
+}, { collection: 'Achievements' });
+
 // Mongoose models
 const Stats = mongoose.model('Stats', StatsSchema);
 const Activity = mongoose.model('Activity', ActivitySchema);
 const Progress = mongoose.model('Progress', ProgressSchema);
+const Achievements = mongoose.model('Achievements', AchievementsSchema);
 
 // API endpoints
 app.get('/Stats/:userId', async (req, res) => {
@@ -162,6 +169,16 @@ app.get('/Progress/:userId', async (req, res) => {
   try {
       const progressData = await Progress.find({ userId: req.params.userId });
       res.send(progressData);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+});
+
+
+app.get('/Achievements/:userId', async (req, res) => {
+  try {
+      const achievementsData = await Achievements.find({ userId: req.params.userId }).sort({ achievedOn: -1 });
+      res.send(achievementsData);
   } catch (error) {
       res.status(500).send(error.message);
   }
