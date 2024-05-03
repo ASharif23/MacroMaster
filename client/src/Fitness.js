@@ -13,7 +13,7 @@ function CalorieCalculator() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:80/burnedCalories', { activity, time, userId });
+      const response = await axios.post('http://localhost:4000/burnedCalories', { activity, time, userId });
       console.log(response)
       setResult(response.data);
     } catch (error) {

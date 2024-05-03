@@ -16,7 +16,7 @@ function Home() {
       const fetchFoods = async () => {
         try {
           // Update the URL to use query parameters
-          const response = await axios.get(`http://localhost:80/foods`, {
+          const response = await axios.get(`http://localhost:4000/foods`, {
             params: { userId: userId }
           });
           setFoodData([...response.data]);
